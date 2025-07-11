@@ -3,33 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>은사 테스트</title>
+    <title>✨ 은사 발견 테스트</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
         :root {
-            --primary-color: #4a90e2;
-            --primary-light: #eaf2fb;
-            --background-color: #f7f8fa;
+            --primary-color: #5a67d8; /* 차분한 파란색 계열로 변경 */
+            --primary-light: #ebf4ff;
+            --background-color: #f7fafc;
             --card-background: #ffffff;
-            --text-dark: #333d4b;
-            --text-light: #6b7684;
-            --border-color: #e5e8eb;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --border-color: #e2e8f0;
             --white: #fff;
+            --success-color: #48bb78; /* 결과 바 색상 */
         }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
             background-color: var(--background-color);
             color: var(--text-dark);
-            margin: 0;
             padding: 20px;
             display: flex;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
@@ -37,42 +41,45 @@
             max-width: 700px;
         }
 
-        .test-wrapper {
+        .test-wrapper, #results {
             background-color: var(--card-background);
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(149, 157, 165, 0.1);
-            padding: 30px;
+            border-radius: 20px; /* 더 부드러운 곡선 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+            padding: 40px;
+            margin-bottom: 30px;
         }
 
         h1 {
             color: var(--text-dark);
             text-align: center;
-            margin: 0 0 10px 0;
-            font-size: 1.8em;
+            margin-bottom: 15px;
+            font-size: 2em;
+            font-weight: 700;
         }
 
         .instructions {
             text-align: center;
             color: var(--text-light);
             background-color: var(--primary-light);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            font-size: 0.9em;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+            line-height: 1.6;
         }
 
-        .instructions p { margin: 5px 0; }
+        .instructions p { margin: 8px 0; }
         .instructions strong { color: var(--primary-color); }
 
         .progress-container {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .progress-bar-bg {
             width: 100%;
-            height: 10px;
+            height: 12px;
             background-color: var(--border-color);
-            border-radius: 5px;
+            border-radius: 6px;
             overflow: hidden;
         }
 
@@ -80,116 +87,137 @@
             width: 0%;
             height: 100%;
             background-color: var(--primary-color);
-            border-radius: 5px;
-            transition: width 0.3s ease-in-out;
+            border-radius: 6px;
+            transition: width 0.4s ease-in-out;
         }
         
         .progress-text {
             text-align: right;
-            font-size: 0.85em;
+            font-size: 0.9em;
             color: var(--text-light);
-            margin-top: 5px;
+            margin-top: 8px;
+            font-weight: 500;
         }
 
         .question-card {
             margin-bottom: 15px;
-            padding: 15px 20px;
+            padding: 20px 25px;
             border: 1px solid var(--border-color);
             border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .question-card:focus-within { /* 답변 선택 시 시각적 효과 */
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
         }
 
         .question-text {
             font-weight: 500;
-            line-height: 1.5;
+            line-height: 1.6;
             flex-grow: 1;
         }
 
         .score-selector {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             flex-shrink: 0;
         }
 
         .score-btn {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             border: 2px solid var(--border-color);
-            background-color: transparent;
+            background-color: var(--card-background);
             color: var(--text-light);
             font-size: 1.1em;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .score-btn:hover {
             border-color: var(--primary-color);
             color: var(--primary-color);
+            transform: translateY(-2px); /* 호버 시 살짝 위로 */
         }
 
         .score-btn.selected {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
             color: var(--white);
+            transform: scale(1.1); /* 선택 시 강조 효과 */
         }
 
         .submit-button {
             display: block;
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             font-size: 1.2em;
             font-weight: 700;
             color: var(--white);
-            background: var(--primary-color);
+            background: linear-gradient(45deg, #5a67d8, #7f9cf5); /* 그라데이션 적용 */
             border: none;
             border-radius: 12px;
             cursor: pointer;
             text-align: center;
             margin-top: 30px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+            box-shadow: 0 4px 15px rgba(90, 103, 216, 0.4);
         }
 
         .submit-button:hover {
             opacity: 0.9;
-            box-shadow: 0 6px 15px rgba(74, 144, 226, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(90, 103, 216, 0.5);
         }
 
         #results {
             margin-top: 30px;
-            padding: 30px;
-            background-color: var(--card-background);
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(149, 157, 165, 0.1);
             display: none; /* Initially hidden */
         }
         
         #results h2 {
             text-align: center;
             color: var(--text-dark);
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         
-        .result-item { display: flex; align-items: center; margin-bottom: 20px; }
+        .result-item { display: flex; align-items: center; margin-bottom: 25px; }
         .result-item:last-child { margin-bottom: 0; }
-        .rank { font-size: 1.2em; font-weight: 700; color: var(--primary-color); width: 60px; }
+        .rank { font-size: 1.8em; font-weight: 700; color: var(--text-light); width: 60px; text-align: center;}
         .result-details { flex-grow: 1; }
-        .gift-name { font-size: 1.15em; font-weight: 500; margin: 0 0 8px 0; }
-        .progress-bar-container { width: 100%; background-color: var(--border-color); border-radius: 5px; height: 18px; overflow: hidden; }
-        .progress-bar { height: 100%; background: var(--primary-color); width: 0%; border-radius: 5px; transition: width 1s ease-in-out; display: flex; align-items: center; justify-content: center; color: var(--white); font-size: 0.8em; }
+        .gift-name { font-size: 1.25em; font-weight: 700; margin: 0 0 10px 0; color: var(--text-dark); }
+        .progress-bar-container { width: 100%; background-color: var(--border-color); border-radius: 8px; height: 22px; overflow: hidden; }
+        .progress-bar { 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--success-color), #81e6d9);
+            width: 0%; 
+            border-radius: 8px; 
+            transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1); /* 부드러운 애니메이션 */
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-end; /* 텍스트 오른쪽 정렬 */
+            color: var(--white); 
+            font-size: 0.9em;
+            font-weight: 700;
+            padding-right: 10px;
+        }
 
         @media (max-width: 600px) {
-            body { padding: 10px; }
-            .test-wrapper, #results { padding: 20px; }
-            h1 { font-size: 1.6em; }
-            .question-card { flex-direction: column; align-items: flex-start; }
-            .question-text { margin-bottom: 10px; }
-            .score-selector { align-self: flex-end; }
+            body { padding: 15px; }
+            .test-wrapper, #results { padding: 25px; }
+            h1 { font-size: 1.7em; }
+            .question-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .score-selector { align-self: center; /* 버튼 가운데 정렬 */ width: 100%; justify-content: space-around;}
         }
     </style>
 </head>
@@ -241,9 +269,9 @@
             { id: 'exhortation', name: '권면', questions: [
                 { id: 6, text: '나는 문제 때문에 낙심하고 절망한 사람들을 말로써 위로하고 격려하는 것을 좋아한다.' }, { id: 31, text: '나는 필요한 사역에 사람들이 참여하도록 효과적으로 동기를 부여하고 격려할 수 있다.' }, { id: 56, text: '슬픔이나 고통을 당한 사람들이 나를 찾아오면, 그 문제가 해결되거나 감소 되는 데에 큰 도움이 된다고 말하곤 한다.' }, { id: 81, text: '나는 실망한 자, 죄책감에 시달리는 자, 혹은 중독자를 효과적으로 상담해주고 싶은 소원을 가지고 있다.' }, { id: 106, text: '나는 고난과 고통 당하는 사람들에게 그 해결책으로 성경을 찾아보도록 권면하고 있다.' }
             ]},
-             {id: 'relationship', name: '관계', questions: [
-            { id: 301, text: '나는 새로운 사람들과 쉽게 친해지고 그들이 나와 함께 있을 때 편안함을 느낀다고 말한다.' }, { id: 302, text: '사람들은 나에게 고민을 자주 털어놓고, 나와 대화하면 마음이 가벼워진다고 말한다.' },{ id: 303, text: '나는 공동체 안에서 갈등이 생겼을 때 중간에서 화해시키는 역할을 자주 맡는다.' },{ id: 304, text: '나는 누군가를 판단하기보다 이해하려는 마음으로 관계를 맺으려 한다.' },{ id: 305, text: '사람들과의 깊은 관계 안에서 하나님의 사랑을 나누는 것이 나에게 기쁨이 된다.' }
-            ]}
+            {id: 'relationship', name: '관계', questions: [
+                { id: 301, text: '나는 새로운 사람들과 쉽게 친해지고 그들이 나와 함께 있을 때 편안함을 느낀다고 말한다.' }, { id: 302, text: '사람들은 나에게 고민을 자주 털어놓고, 나와 대화하면 마음이 가벼워진다고 말한다.' },{ id: 303, text: '나는 공동체 안에서 갈등이 생겼을 때 중간에서 화해시키는 역할을 자주 맡는다.' },{ id: 304, text: '나는 누군가를 판단하기보다 이해하려는 마음으로 관계를 맺으려 한다.' },{ id: 305, text: '사람들과의 깊은 관계 안에서 하나님의 사랑을 나누는 것이 나에게 기쁨이 된다.' }
+            ]},
             { id: 'helps', name: '도움', questions: [
                 { id: 9, text: '나는 주의 종들이 그들의 사명을 잘 감당하도록 여러모로 도와주기를 즐거워한다.' }, { id: 34, text: '많은 사람들이 그들의 사역에 내가 많은 도움이 되었다고 말한다.' }, { id: 59, text: '나는 다른 사람들이 이미 해 놓은 지루한 일도 즐겁게 하는 경향이 있다.' }, { id: 84, text: '나는 남모르게 사람을 도울 때 정말 기쁘다.' }, { id: 109, text: '내가 주님의 일을 할 때 누가 더 인정을 받느냐 하는 것은 나에게 큰 문제가 아니다.' }
             ]},
@@ -273,11 +301,10 @@
             ]},
             { id: 'service', name: '봉사', questions: [
                 { id: 25, text: '나는 교회를 위한 특별한 일에 부름 받는 것을 즐거워한다.' }, { id: 50, text: '나는 특별한 기술은 없지만 교회가 필요한 일이라면 무엇이든지 한다.' }, { id: 75, text: '사람들은 나를 가리켜 평범한 일에 싫증 내지 않고 잘한다고 칭찬하는 편이다.' }, { id: 100, text: '나는 누가 말하는 것을 듣거나, 단지 읽거나, 대화를 나누기 보다는 무엇인가 적극적으로 행동하는 것을 더 좋아한다.' }, { id: 125, text: '나는 비록 작고 보잘 것 없는 일일지라도 어떤 일을 부탁 받으면 기쁨으로 응답하는 편이다.' }
-            ]}
+            ]},
             {id: 'administration', name: '행정', questions: [
-            { id: 201, text: '나는 조직의 목표를 명확히 설정하고, 그 목표에 따라 계획을 세우는 일을 즐겨 한다.' }, { id: 202, text: '나는 다양한 자원(사람, 시간, 재정 등)을 체계적으로 관리하고 배치하는 데 강점을 느낀다.' }, { id: 203, text: '사람들은 내가 맡은 일이나 프로젝트가 질서 있게 진행된다고 자주 말한다.' }, { id: 204, text: '나는 복잡한 일을 단계적으로 나누고, 우선순위를 정해서 실행하는 데에 자신이 있다.' },{ id: 205, text: '내가 맡은 모임이나 조직은 시간이 지날수록 점점 더 효율적이고 안정적으로 운영된다.' }
+                { id: 201, text: '나는 조직의 목표를 명확히 설정하고, 그 목표에 따라 계획을 세우는 일을 즐겨 한다.' }, { id: 202, text: '나는 다양한 자원(사람, 시간, 재정 등)을 체계적으로 관리하고 배치하는 데 강점을 느낀다.' }, { id: 203, text: '사람들은 내가 맡은 일이나 프로젝트가 질서 있게 진행된다고 자주 말한다.' }, { id: 204, text: '나는 복잡한 일을 단계적으로 나누고, 우선순위를 정해서 실행하는 데에 자신이 있다.' },{ id: 205, text: '내가 맡은 모임이나 조직은 시간이 지날수록 점점 더 효율적이고 안정적으로 운영된다.' }
             ]}
-
         ];
 
         const questionsContainer = document.getElementById('questions-container');
@@ -288,12 +315,27 @@
         const progressText = document.getElementById('progress-text');
         
         let allQuestions = [];
-        giftsData.forEach(gift => { allQuestions.push(...gift.questions); });
+        giftsData.forEach(gift => { 
+            // 중복된 은사 카테고리(행정)를 합치기 위한 로직 추가
+            const existingGift = allQuestions.find(q => q.giftId === gift.id);
+            if (existingGift) {
+                gift.questions.forEach(q => {
+                    allQuestions.push({ ...q, giftId: gift.id, giftName: gift.name });
+                });
+            } else {
+                 gift.questions.forEach(q => {
+                    allQuestions.push({ ...q, giftId: gift.id, giftName: gift.name });
+                });
+            }
+        });
+
+        // 질문들을 랜덤으로 섞기
         allQuestions.sort(() => Math.random() - 0.5);
         
         const totalQuestions = allQuestions.length;
         progressText.textContent = `0 / ${totalQuestions}`;
 
+        // 질문 카드 생성
         allQuestions.forEach((question, index) => {
             const card = document.createElement('div');
             card.className = 'question-card';
@@ -305,11 +347,12 @@
                     <button type="button" class="score-btn" data-value="1">1</button>
                     <button type="button" class="score-btn" data-value="0">0</button>
                 </div>
-                <input type="hidden" name="q${question.id}" id="q${question.id}" value="">
+                <input type="hidden" name="q${question.id}" data-gift-id="${question.giftId}" value="">
             `;
             questionsContainer.appendChild(card);
         });
 
+        // 점수 버튼 클릭 이벤트
         questionsContainer.addEventListener('click', function(e) {
             if (e.target.classList.contains('score-btn')) {
                 const button = e.target;
@@ -318,19 +361,16 @@
                 const questionCard = parentSelector.parentElement;
                 const hiddenInput = questionCard.querySelector('input[type="hidden"]');
                 
-                // Deselect other buttons in the same group
+                // 같은 그룹 내 다른 버튼 선택 해제
                 parentSelector.querySelectorAll('.score-btn').forEach(btn => btn.classList.remove('selected'));
-                
-                // Select the clicked button
                 button.classList.add('selected');
-                
-                // Set value to hidden input
                 hiddenInput.value = value;
                 
                 updateProgress();
             }
         });
         
+        // 진행도 업데이트 함수
         function updateProgress() {
             const answeredQuestions = document.querySelectorAll('input[type="hidden"][value]:not([value=""])').length;
             const percentage = (answeredQuestions / totalQuestions) * 100;
@@ -338,6 +378,7 @@
             progressText.textContent = `${answeredQuestions} / ${totalQuestions}`;
         }
 
+        // 폼 제출 이벤트
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             const answeredQuestions = document.querySelectorAll('input[type="hidden"][value]:not([value=""])').length;
@@ -346,31 +387,33 @@
                 return;
             }
 
+            // 점수 계산
             const scores = {};
             giftsData.forEach(gift => {
-                scores[gift.id] = 0;
-                gift.questions.forEach(question => {
-                    const input = document.getElementById(`q${question.id}`);
-                    if (input && input.value !== '') {
-                        scores[gift.id] += parseInt(input.value);
-                    }
-                });
+                scores[gift.id] = { name: gift.name, score: 0, questionCount: gift.questions.length };
             });
 
-            const sortedGifts = Object.entries(scores).map(([id, score]) => {
-                const giftInfo = giftsData.find(g => g.id === id);
-                return { id: id, name: giftInfo.name, score: score };
+            document.querySelectorAll('input[type="hidden"]').forEach(input => {
+                if (input.value !== '') {
+                    const giftId = input.dataset.giftId;
+                    scores[giftId].score += parseInt(input.value);
+                }
+            });
+
+            const sortedGifts = Object.entries(scores).map(([id, data]) => {
+                return { id, ...data };
             }).sort((a, b) => b.score - a.score);
 
             displayResults(sortedGifts.slice(0, 3));
         });
 
+        // 결과 표시 함수
         function displayResults(topGifts) {
             resultsList.innerHTML = '';
-            const rankPrefix = ['🥇 1', '🥈 2', '🥉 3'];
+            const rankPrefix = ['🥇', '🥈', '🥉'];
             
             topGifts.forEach((gift, index) => {
-                const maxScore = 15; // 5 questions * 3 points max
+                const maxScore = gift.questionCount * 3; // 각 은사별 만점 (질문 수 * 3)
                 const percentage = (gift.score / maxScore) * 100;
 
                 const resultItem = document.createElement('div');
@@ -391,13 +434,14 @@
             const resultsContainer = document.getElementById('results');
             resultsContainer.style.display = 'block';
             
+            // 결과 바 애니메이션
             setTimeout(() => {
                 resultsContainer.querySelectorAll('.progress-bar').forEach(bar => {
                     bar.style.width = bar.dataset.percentage + '%';
                 });
             }, 100);
 
-            resultsContainer.scrollIntoView({ behavior: 'smooth' });
+            resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     </script>
 </body>
