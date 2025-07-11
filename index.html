@@ -1,120 +1,461 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>은사 테스트 for 랑카</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-      line-height: 1.6;
-    }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-      font-size: 2.5rem;
-      margin-bottom: 30px;
-    }
-    .question {
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .question label:first-child {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 10px;
-      color: #34495e;
-    }
-    .options label {
-      margin-right: 15px;
-      background: #ecf0f1;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .options input[type="radio"] {
-      margin-right: 5px;
-    }
-    #submitBtn {
-      display: block;
-      margin: 30px auto 10px;
-      padding: 12px 30px;
-      font-size: 18px;
-      color: #fff;
-      background-color: #2980b9;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: background-color 0.3s ease;
-    }
-    #submitBtn:hover {
-      background-color: #1f6391;
-    }
-    #result {
-      background: #dff0d8;
-      border-left: 6px solid #3c763d;
-      padding: 20px;
-      margin-top: 30px;
-      font-size: 18px;
-      border-radius: 8px;
-      color: #2e5c32;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성경적 은사 테스트</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px 40px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .instructions {
+            text-align: center;
+            color: #555;
+            background-color: #e9f5ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+            border-left: 5px solid #1e90ff;
+        }
+
+        .question-card {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            background-color: #fafafa;
+            transition: box-shadow 0.3s ease;
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .question-text {
+            font-weight: 500;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 8px;
+            transform: scale(1.2);
+            accent-color: #1e90ff;
+        }
+        
+        .option label {
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(45deg, #1e90ff, #3a7bd5);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        #results {
+            margin-top: 40px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: none; /* Initially hidden */
+        }
+        
+        #results h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+        
+        .result-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .rank {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #1e90ff;
+            width: 50px;
+        }
+        
+        .result-details {
+            flex-grow: 1;
+        }
+        
+        .gift-name {
+            font-size: 1.2em;
+            font-weight: 500;
+            margin: 0 0 8px 0;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            height: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(45deg, #3a7bd5, #1e90ff);
+            width: 0%; /* Will be set by JS */
+            border-radius: 5px;
+            transition: width 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8em;
+        }
+
+    </style>
 </head>
 <body>
-  <h1>은사 테스트</h1>
-  <form id="giftForm"></form>
-  <button id="submitBtn">결과 보기</button>
-  <div id="result"></div>
 
-  <script>
-    const questions = [...Array(100)].map((_, i) => `(${i+1}) ${i+1}.`); // 실제 질문은 기존 그대로 유지됨 (코드 축약 표현)
-    const categoryNames = [
-      "목양", "가르침", "지혜", "지식", "권면", "구제", "도움", "긍휼", "선교", "전도",
-      "대접", "믿음", "지도력", "다스림", "기적", "방언", "청빈", "독신", "중보기도", "봉사"
-    ];
-    const categoryScores = {};
-    categoryNames.forEach(cat => categoryScores[cat] = 0);
-    const form = document.getElementById("giftForm");
+    <div class="container">
+        <h1>성경적 은사 테스트</h1>
+        <div class="instructions">
+            <p>각 문항을 신중하게 읽고, 자신에게 얼마나 해당되는지 가장 가깝다고 생각하는 항목을 선택해 주세요. 모든 문항에 답변하셔야 정확한 결과를 얻을 수 있습니다.</p>
+            <p><strong>점수 기준:</strong> 3점 (매우 그렇다), 2점 (대체로 그렇다), 1점 (조금 그렇다), 0점 (전혀 그렇지 않다)</p>
+        </div>
 
-    questions.forEach((q, i) => {
-      const categoryIndex = i % 20;
-      const category = categoryNames[categoryIndex];
-      const div = document.createElement("div");
-      div.className = "question";
-      div.innerHTML = `<label>${q}</label>
-        <div class="options">
-          <label><input type="radio" name="q${i}" value="3" required> 매우 그렇다</label>
-          <label><input type="radio" name="q${i}" value="2"> 대체로 그렇다</label>
-          <label><input type="radio" name="q${i}" value="1"> 조금 그렇다</label>
-          <label><input type="radio" name="q${i}" value="0"> 전혀 그렇지 않다</label>
-        </div>`;
-      form.appendChild(div);
-    });
+        <form id="gifts-form">
+            <div id="questions-container"></div>
+            <button type="submit" class="submit-button">결과 확인하기</button>
+        </form>
+    </div>
 
-    document.getElementById("submitBtn").addEventListener("click", function(e) {
-      e.preventDefault();
-      const formData = new FormData(form);
-      for (let [key, value] of formData.entries()) {
-        const index = parseInt(key.substring(1));
-        const score = parseInt(value);
-        const category = categoryNames[index % 20];
-        categoryScores[category] += score;
-      }
-      const sorted = Object.entries(categoryScores).sort((a, b) => b[1] - a[1]);
-      const top3 = sorted.slice(0, 3);
-      document.getElementById("result").innerHTML =
-        `<p>가장 강한 은사 Top 3:</p>
-         <ol>${top3.map(([k, v]) => `<li>${k} (${v}점)</li>`).join('')}</ol>`;
-    });
-  </script>
+    <div id="results" class="container">
+        <h2>나의 은사 테스트 결과</h2>
+        <div id="results-list"></div>
+    </div>
+
+    <script>
+        const giftsData = [
+            { id: 'pastoring', name: '목양', questions: [
+                { id: 2, text: '나는 여러 사람들과 계속해서 개인적으로 그들의 성공과 실패를 같이 나누면서 동참하는 일을 좋아한다.' },
+                { id: 27, text: '나는 성도들의 영적 축복을 위해 책임 맡은 자라고 확신하며 또 일에 즐거워 한다.' },
+                { id: 52, text: '나는 성도를 인도하고 영적으로 지도해주는 일에 두려움을 느끼지 않는다.' },
+                { id: 77, text: '나는 동료신자들에게 말씀으로 인도, 양육하면서 함께 기도해 주고 있다.' },
+                { id: 102, text: '사람들은 말하기를 내가 그들을 도왔기 때문에 그들의 공동체가 회복되었다고 한다.' }
+            ]},
+            { id: 'teaching', name: '가르침', questions: [
+                { id: 3, text: '나는 여러 사람들로부터 내가 성경의 진리를 그들에게 의미 있게 잘 가르친다고 말하는 것을 듣는다.' },
+                { id: 28, text: '나는 건전한 그리스도의 몸의 사역을 위한 신약의 교훈을 의미 있게 설명할 수 있다고 생각한다.' },
+                { id: 53, text: '나는 성경의 새로운 진리를 다른 사람들에게 전달하기 위하여 성경을 연구하는 일에 많은 시간을 투자할 수 있다.' },
+                { id: 78, text: '나는 성경 말씀을 가르칠 때 그들의 지식, 태도, 가치, 혹은 행위가 변화되는 것을 보게 된다.' },
+                { id: 103, text: '성경을 공부하고 그것을 남과 나누는 것은 나에게 얼마나 행복한 것인지 모른다.' }
+            ]},
+            { id: 'wisdom', name: '지혜', questions: [
+                { id: 4, text: '나는 성경의 영적 진리를 나의 생활에 잘 적용하여 왔다고 생각한다.' },
+                { id: 29, text: '매우 복잡한 문제를 직관적으로 해결할 수 있는 경우를 많이 당한다.' },
+                { id: 54, text: '사람들이 문제가 있을때 나는 자주 최선의 성경적 해결책을 제시해 주곤 한다.' },
+                { id: 79, text: '어떤 사람들은 내가 성경의 진리를 잘 깨닫고 또한 취사선택 하여 다른 신자들의 필요를 채워주고 있다고 말한다.' },
+                { id: 104, text: '나는 어떠한 중요한 결정을 하게 될 때 하나님의 비상한 임재를 개인적으로 확신할 때가 많다.' }
+            ]},
+            { id: 'knowledge', name: '지식', questions: [
+                { id: 5, text: '사람들은 내가 성경의 지식을 아주 알기 쉽게 가르치고 설명한다고 말한다.' },
+                { id: 30, text: '나는 사람들이 하나님께 더 가까이 갈 수 있도록 도움이 되는 영적 통찰력을 가지곤 한다.' },
+                { id: 55, text: '연구와 경험을 통하여 나는 하나님 나라의 확장을 위해 필요한 주요 전략과 방법을 구별해 왔다.' },
+                { id: 80, text: '나는 새로운 성경의 진리를 배우기 위해 성경을 꽤 많은 시간을 드려 공부하고 읽는다.' },
+                { id: 105, text: '나는 즉각적으로 어떤 상황을 살펴 나 자신을 위한 새로운 진리를 발견하는 능력을 가지고 있다.' }
+            ]},
+            { id: 'exhortation', name: '권면', questions: [
+                { id: 6, text: '나는 문제 때문에 낙심하고 절망한 사람들을 말로써 위로하고 격려하는 것을 좋아한다.' },
+                { id: 31, text: '나는 필요한 사역에 사람들이 참여하도록 효과적으로 동기를 부여하고 격려할 수 있다.' },
+                { id: 56, text: '슬픔이나 고통을 당한 사람들이 나를 찾아오면, 그 문제가 해결되거나 감소 되는 데에 큰 도움이 된다고 말하곤 한다.' },
+                { id: 81, text: '나는 실망한 자, 죄책감에 시달리는 자, 혹은 중독자( 술,마약,섹스,노름 등) 를 효과적으로 상담해주고 싶은 소원을 가지고 있다.' },
+                { id: 106, text: '나는 고난과 고통 당하는 사람들에게 그 해결책으로 성경을 찾아보도록 권면하고 있다.' }
+            ]},
+            { id: 'giving', name: '구제', questions: [
+                { id: 8, text: '나는 주의 일을 위해 더 많이 드리도록 돈을 절약하고 검소하게 살려고 기쁨으로 애쓴다.' },
+                { id: 33, text: '나는 교회와 주님 사업을 위해 나의 전체 수입 중에서 10% 훨씬 이상을 바친다.' },
+                { id: 58, text: '하나님 사역에 필요하다고 할 때마다 나는 그 필요한 돈을 마련할 수 있다.' },
+                { id: 83, text: '나는 하나님께서 나의 모든 필요를 채워주실 것이라는 것은 너무나도 확실히 믿기 때문에 나 자신을 전적으로 희생하며 살아간다.' },
+                { id: 108, text: '나는 하나님의 일을 위하여 가난한 삶을 살 마음의 자세가 되어 있다.' }
+            ]},
+            { id: 'helps', name: '도움', questions: [
+                { id: 9, text: '나는 주의 종들이 그들의 사명을 잘 감당하도록 여러모로 도와주기를 즐거워한다.' },
+                { id: 34, text: '많은 사람들이 그들의 사역에 내가 많은 도움이 되었다고 말한다.' },
+                { id: 59, text: '나는 다른 사람들이 이미 해 놓은 지루한 일도 즐겁게 하는 경향이 있다.' },
+                { id: 84, text: '나는 남모르게 사람을 도울 때 정말 기쁘다.' },
+                { id: 109, text: '내가 주님의 일을 할 때 누가 더 인정을 받느냐 하는 것은 나에게 큰 문제가 아니다.' }
+            ]},
+            { id: 'mercy', name: '긍휼', questions: [
+                { id: 10, text: '나는 몸이나 마음에 병든 사람들이 고통이 감소되도록 그들과 함께 일하고 싶어한다.' },
+                { id: 35, text: '나는 다른 사람들이 물질적으로나 실체적으로 필요할 때 그들의 필요를 채워주고 있다.' },
+                { id: 60, text: '나는 병원이나 양로원을 방문하여 위로하는 일이 적격이라고 생각한다.' },
+                { id: 85, text: '불행한 사람을 도와야 할 때 사람들은 나를 부른다.' },
+                { id: 110, text: '나는 고독한 사람, 혼자 사는 사람, 감옥에 있는 사람들을 위해서 시간을 보내는 것이 즐겁다.' }
+            ]},
+            { id: 'missionary', name: '선교', questions: [
+                { id: 11, text: '나는 특별히 소외되거나 힘이 없는 사람들과 어울리는 것을 좋아하며, 그들도 나를 잘 받아 들이는 편이다.' },
+                { id: 36, text: '나는 다른 문화권 안에 있는 사람들을 전도하기 위하여 외국어를 배울 때 아주 쉽고 빨리 배울 수 있다고 생각한다.' },
+                { id: 61, text: '다른 나라 사람들과 어울리는 데에 큰 어려움이 없고 그것을 좋아한다.' },
+                { id: 86, text: '나는 사람들을 더 많이 전도할 수 있는 상황에 처할 때 매우 마음이 기쁘고 편하다.' },
+                { id: 111, text: '무엇보다도, 나는 다른 나라에서 사람들이 예수를 믿는 것을 보고 싶다.' }
+            ]},
+            { id: 'evangelism', name: '전도', questions: [
+                { id: 12, text: '나는 전도하여 불신자에게 예수님을 영접하게 하는 일을 즐겨 한다.' },
+                { id: 37, text: '내가 예수 믿고 구원받은 것을 간증할 때 많은 불신자들이 은혜를 받는다.' },
+                { id: 62, text: '내가 예수 믿는 것을 자주 표현하여 영향을 미쳐도 불신자들은 내가 그들과 함께 있는 것을 좋아하는 편이다.' },
+                { id: 87, text: '나는 다른 사람들이 나처럼 불신자에게 전도하지 않을 때 매우 실망한다.' },
+                { id: 112, text: '나는 불신자를 전도하려는 소원 때문에 그들로부터 호감을 갖게 하는 사람이라고 생각한다.' }
+            ]},
+            { id: 'hospitality', name: '대접', questions: [
+                { id: 13, text: '나의 집은 누구든지 머무르고 싶어하는 사람들에게 열려있다.' },
+                { id: 38, text: '나는 교회 행사에 몸으로 봉사하기를 즐겨 한다.' },
+                { id: 63, text: '우리 집에 오는 사람들마다 마치 자기네 집인 것처럼 편안하다고 말하곤 한다.' },
+                { id: 88, text: '사람들은 내가 손님접대하기를 좋아한다고 한다.' },
+                { id: 113, text: '나는 주의 종이 필요하다면 언제든지 나의 집을 그들에게 제공하고 싶은 마음이다.' }
+            ]},
+            { id: 'faith', name: '믿음', questions: [
+                { id: 14, text: '어느 모임에서나 다른 사람들이 내가 인도자가 되기를 바라는 편이다.' },
+                { id: 39, text: '나는 불가능한 일이 쉽게 일어날 것을 하나님께 믿고 또 그것을 체험한다.' },
+                { id: 64, text: '사람들은 말하기를 내가 다른 사람들이 못하는 일을 감당하는 믿음을 가졌다고 말한다.' },
+                { id: 89, text: '다른 사람들은 잘 못 느끼지만, 나는 하나님의 사역이 미래에 어떻게 발전될 것인가에 대한 하나님의 특별한 뜻을 확실하게 느낄 때가 많다.' },
+                { id: 114, text: '사람들은 내가 특별한 환상을 잘 보는 사람이라고 하는데, 나도 그렇게 생각한다.' }
+            ]},
+            { id: 'leadership', name: '지도력', questions: [
+                { id: 15, text: '내가 말할 때 사람들은 잘 들어주는 편이며, 또 그 말에 따라주는 편이다.' },
+                { id: 40, text: '다른 신자들이 나의 지도력을 따라주는데 그것은 그들이 나를 믿기 때문이다.' },
+                { id: 65, text: '제가 목표를 세우면 사람들은 쉽게 따라준다.' },
+                { id: 90, text: '내가 어떤 그룹에 참여하게 되면, 사람들이 나를 세워 지도자가 되기를 바라는 것 같을 때가 있다.' },
+                { id: 115, text: '내가 무슨 일을 책임 맡으면, 모든 일이 부드럽게 잘 진행되는 것 같다.' }
+            ]},
+            { id: 'administration', name: '다스림', questions: [
+                { id: 16, text: '조직이 잘 안되어 있는 그룹에서 나는 그 약한 조직을 강화시켜 주기를 즐겨 한다.' },
+                { id: 41, text: '나는 보다 효과적인 사역을 위해 아이디어, 사람, 물질 등의 자원을 조직화 하는 데에 특별한 취미와 능력이 있다고 생각한다.' },
+                { id: 66, text: '나는 어떤 그룹의 목표를 세우고 성취하는 일에 효과적이라고 생각한다.' },
+                { id: 91, text: '나는 어떤 일을 하라고 설득할 필요 없이 다른 사람을 인도할 수 있다.' },
+                { id: 116, text: '나는 나의 교회에서 어떤 일을 성공시키는 책임을 맡는 것을 즐거워 한다.' }
+            ]},
+            { id: 'miracles', name: '기적', questions: [
+                { id: 17, text: '내가 기도할 때 눈에 보이는 기적이 응답으로 자주 나타난다고 사람들이 말한다.' },
+                { id: 42, text: '하나님은 나를 통해 초자연적인 기사와 이적을 행하신다.' },
+                { id: 67, text: '하나님은 정기적으로 내 생애를 통하여 불가능한 일을 기적같이 이루시는 것 같다.' },
+                { id: 92, text: '사람들은 내가 생활과 환경에 초자연적인 변화를 가져오게 하는 하나님의 도구로 쓰임 받았다고 말하는 적이 있다.' },
+                { id: 117, text: '주님의 이름으로 나는 눈먼 자를 다시 보게 한 적이 있고 또 할 수 있다.' }
+            ]},
+            { id: 'tongues', name: '방언', questions: [
+                { id: 19, text: '나는 방언을 말한다.' },
+                { id: 44, text: '나는 내가 전혀 모르는 말로 하나님의 메세지를 사람들에게 말해주곤 한다.' },
+                { id: 69, text: '나는 전혀 배우지 않은 말로(방언) 하나님께 말할 수(기도) 있다.' },
+                { id: 94, text: '내가 공중 앞에서 방언을 말할 때 나는 그 방언이 통역되기를 기대한다.' },
+                { id: 119, text: '내가 방언을 말할 때 나는 그것이 교회에 덕을 세우는 것임을 믿는다.' }
+            ]},
+            { id: 'poverty', name: '청빈', questions: [
+                { id: 21, text: '나는 더 편안하게 살수 있지만, 가난한 사람들과 함께 하기 위하여 청빈하게 산다.' },
+                { id: 46, text: '검소한 생활을 하는 것이 나에게는 그렇게 즐거울 수가 없다.' },
+                { id: 71, text: '나는 가난한 편은 아니지만, 가난한 사람과 쉽게 어울릴 수 있다.' },
+                { id: 96, text: '사람들에 의하면 나는 너무 지나치게 주의 일 때문에 물질적으로 희생하고 있다고 한다.' },
+                { id: 121, text: '내가 그들과 같은 수준의 삶을 살기 때문에 가난한 사람들이 나를 받아들인다.' }
+            ]},
+            { id: 'celibacy', name: '독신', questions: [
+                { id: 22, text: '나는 독신생활을 즐기며 산다.' },
+                { id: 47, text: '내가 혼자 살아도 아무 문제가 없다는 것을 다른 사람들도 인정하고 있다.' },
+                { id: 72, text: '나는 혼자 살기 때문에 더 주님을 섬길 수 있는 시간이 많다.' },
+                { id: 97, text: '나는 독신으로 혼자 살지만 성적인 문제 때문에 어려운 적은 거의 없는 편이다.' },
+                { id: 122, text: '나는 바울이 자기처럼 독신으로 사는 것이 좋겠다고 한 말씀에 공감하는 바이다.' }
+            ]},
+            { id: 'intercession', name: '중보기도', questions: [
+                { id: 23, text: '나는 매일 최소한 1시간 이상 기도하는 데에 소비한다.' },
+                { id: 48, text: '누가 나에게 기도를 부탁하면 나는 최소한 일주일 이상 기도해 준다.' },
+                { id: 73, text: '남을 위한 중보기도는 내가 시간을 보내는 가장 즐거운 때이다.' },
+                { id: 98, text: '내가 기도해 준 사람들에 의하면 기도의 응답이 너무나도 확실하게 나타난다고 한다.' },
+                { id: 123, text: '내가 기도할 때, 하나님은 자주 나에게 음성으로 말씀하시는데 나는 그것이 하나님의 음성임을 안다.' }
+            ]},
+            { id: 'service', name: '봉사', questions: [
+                { id: 25, text: '나는 교회를 위한 특별한 일에 부름 받는 것을 즐거워한다.' },
+                { id: 50, text: '나는 특별한 기술은 없지만 교회가 필요한 일이라면 무엇이든지 한다.' },
+                { id: 75, text: '사람들은 나를 가리켜 평범한 일에 싫증 내지 않고 잘한다고 칭찬하는 편이다.' },
+                { id: 100, text: '나는 누가 말하는 것을 듣거나, 단지 읽거나, 대화를 나누기 보다는 무엇인가 적극적으로 행동하는 것을 더 좋아한다.' },
+                { id: 125, text: '나는 비록 작고 보잘 것 없는 일일지라도 어떤 일을 부탁 받으면 기쁨으로 응답하는 편이다.' }
+            ]}
+        ];
+
+        const questionsContainer = document.getElementById('questions-container');
+        const form = document.getElementById('gifts-form');
+        const resultsDiv = document.getElementById('results');
+        const resultsList = document.getElementById('results-list');
+        
+        let allQuestions = [];
+
+        giftsData.forEach(gift => {
+            allQuestions.push(...gift.questions);
+        });
+        
+        // Shuffle questions to make the test more engaging
+        allQuestions.sort(() => Math.random() - 0.5);
+
+        allQuestions.forEach((question, index) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            
+            card.innerHTML = `
+                <p class="question-text">${index + 1}. ${question.text}</p>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q${question.id}_3" name="q${question.id}" value="3" required>
+                        <label for="q${question.id}_3">매우 그렇다</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q${question.id}_2" name="q${question.id}" value="2">
+                        <label for="q${question.id}_2">대체로 그렇다</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q${question.id}_1" name="q${question.id}" value="1">
+                        <label for="q${question.id}_1">조금 그렇다</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q${question.id}_0" name="q${question.id}" value="0">
+                        <label for="q${question.id}_0">전혀 그렇지 않다</label>
+                    </div>
+                </div>
+            `;
+            questionsContainer.appendChild(card);
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const scores = {};
+            
+            giftsData.forEach(gift => {
+                scores[gift.id] = 0;
+                gift.questions.forEach(question => {
+                    const score = formData.get(`q${question.id}`);
+                    if (score !== null) {
+                        scores[gift.id] += parseInt(score);
+                    }
+                });
+            });
+
+            // Check if all questions are answered
+            if (Array.from(formData.keys()).length < allQuestions.length) {
+                alert('모든 문항에 답변해주세요.');
+                return;
+            }
+
+            const sortedGifts = Object.entries(scores).map(([id, score]) => {
+                const giftInfo = giftsData.find(g => g.id === id);
+                return {
+                    id: id,
+                    name: giftInfo.name,
+                    score: score
+                };
+            }).sort((a, b) => b.score - a.score);
+
+            displayResults(sortedGifts.slice(0, 3));
+        });
+
+        function displayResults(topGifts) {
+            resultsList.innerHTML = ''; // Clear previous results
+            const rankPrefix = ['1위', '2위', '3위'];
+            
+            topGifts.forEach((gift, index) => {
+                const maxScore = 15; // 5 questions * 3 points max
+                const percentage = (gift.score / maxScore) * 100;
+
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <div class="rank">${rankPrefix[index]}</div>
+                    <div class="result-details">
+                        <p class="gift-name">${gift.name}</p>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: 0%;" data-score="${gift.score}" data-percentage="${percentage}">
+                                ${gift.score}점
+                            </div>
+                        </div>
+                    </div>
+                `;
+                resultsList.appendChild(resultItem);
+            });
+
+            resultsDiv.style.display = 'block';
+            
+            // Animate progress bars
+            const progressBars = resultsList.querySelectorAll('.progress-bar');
+            setTimeout(() => {
+                progressBars.forEach(bar => {
+                    bar.style.width = bar.dataset.percentage + '%';
+                });
+            }, 100);
+
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
