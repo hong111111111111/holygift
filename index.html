@@ -3,16 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>성경적 은사 테스트</title>
+    <title>은사 테스트</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
+        :root {
+            --primary-color: #1e90ff;
+            --primary-gradient: linear-gradient(45deg, #1e90ff, #3a7bd5);
+            --light-bg: #f0f2f5;
+            --white-bg: #ffffff;
+            --text-dark: #2c3e50;
+            --text-light: #555;
+            --border-color: #e0e0e0;
+        }
+
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f0f2f5;
+            background-color: var(--light-bg);
             color: #333;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -21,33 +31,34 @@
         .container {
             width: 100%;
             max-width: 800px;
-            background-color: #ffffff;
+            background-color: var(--white-bg);
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 30px 40px;
+            box-sizing: border-box;
         }
 
         h1 {
-            color: #2c3e50;
+            color: var(--text-dark);
             text-align: center;
             margin-bottom: 10px;
         }
 
         .instructions {
             text-align: center;
-            color: #555;
+            color: var(--text-light);
             background-color: #e9f5ff;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 30px;
             font-size: 0.95em;
-            border-left: 5px solid #1e90ff;
+            border-left: 5px solid var(--primary-color);
         }
 
         .question-card {
             margin-bottom: 25px;
             padding: 20px;
-            border: 1px solid #e0e0e0;
+            border: 1px solid var(--border-color);
             border-radius: 10px;
             background-color: #fafafa;
             transition: box-shadow 0.3s ease;
@@ -66,62 +77,64 @@
 
         .options {
             display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .option {
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding: 5px 10px;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .option:has(input:checked) {
+            background-color: #e0efff;
         }
         
         .option input[type="radio"] {
-            margin-right: 8px;
-            transform: scale(1.2);
-            accent-color: #1e90ff;
+            margin-right: 12px;
+            transform: scale(1.3);
+            accent-color: var(--primary-color);
         }
         
         .option label {
             cursor: pointer;
-            font-size: 0.9em;
+            font-size: 1em;
         }
 
         .submit-button {
             display: block;
             width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
+            padding: 18px; /* 버튼 크기 키움 */
+            font-size: 1.3em; /* 폰트 크기 키움 */
             font-weight: 700;
             color: #fff;
-            background: linear-gradient(45deg, #1e90ff, #3a7bd5);
+            background: var(--primary-gradient);
             border: none;
-            border-radius: 8px;
+            border-radius: 10px; /* 살짝 둥글게 */
             cursor: pointer;
             text-align: center;
             margin-top: 30px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .submit-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        .submit-button:hover, .submit-button:active {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2);
         }
 
         #results {
             margin-top: 40px;
-            padding: 30px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             display: none; /* Initially hidden */
         }
         
         #results h2 {
             text-align: center;
-            color: #2c3e50;
+            color: var(--text-dark);
             margin-bottom: 25px;
         }
         
@@ -142,7 +155,7 @@
         .rank {
             font-size: 1.5em;
             font-weight: 700;
-            color: #1e90ff;
+            color: var(--primary-color);
             width: 50px;
         }
         
@@ -158,15 +171,15 @@
         
         .progress-bar-container {
             width: 100%;
-            background-color: #e0e0e0;
+            background-color: var(--border-color);
             border-radius: 5px;
-            height: 20px;
+            height: 22px;
             overflow: hidden;
         }
         
         .progress-bar {
             height: 100%;
-            background: linear-gradient(45deg, #3a7bd5, #1e90ff);
+            background: var(--primary-gradient);
             width: 0%; /* Will be set by JS */
             border-radius: 5px;
             transition: width 1s ease-in-out;
@@ -174,17 +187,40 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 0.8em;
+            font-size: 0.85em;
         }
 
+        /* 스마트폰 최적화 (Mobile Optimization) */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px 20px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .instructions {
+                font-size: 0.9em;
+                text-align: left;
+            }
+            .question-text {
+                font-size: 1em;
+            }
+            .submit-button {
+                padding: 16px;
+                font-size: 1.2em;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>성경적 은사 테스트</h1>
+        <h1>은사 테스트</h1>
         <div class="instructions">
-            <p>각 문항을 신중하게 읽고, 자신에게 얼마나 해당되는지 가장 가깝다고 생각하는 항목을 선택해 주세요. 모든 문항에 답변하셔야 정확한 결과를 얻을 수 있습니다.</p>
+            <p>샬롬 스리랑카 팀 여러분 :) 여러분의 은사를 '다시' 불일듯 하게 하는 여정 돕기 위해, 은사테스트를 준비해 봤어요! 이번 아웃리치가 열방 뿐 아니라 우리 서로를 세우는 사랑의 여정 되기를 소원하며, 마음 다해 축복합니다! - 홍 (질문출처: <성경적 은사>,생명의 말씀사)</p>
             <p><strong>점수 기준:</strong> 3점 (매우 그렇다), 2점 (대체로 그렇다), 1점 (조금 그렇다), 0점 (전혀 그렇지 않다)</p>
         </div>
 
@@ -200,6 +236,7 @@
     </div>
 
     <script>
+        // '독신', '기적' 은사를 제외한 데이터
         const giftsData = [
             { id: 'pastoring', name: '목양', questions: [
                 { id: 2, text: '나는 여러 사람들과 계속해서 개인적으로 그들의 성공과 실패를 같이 나누면서 동참하는 일을 좋아한다.' },
@@ -299,13 +336,6 @@
                 { id: 91, text: '나는 어떤 일을 하라고 설득할 필요 없이 다른 사람을 인도할 수 있다.' },
                 { id: 116, text: '나는 나의 교회에서 어떤 일을 성공시키는 책임을 맡는 것을 즐거워 한다.' }
             ]},
-            { id: 'miracles', name: '기적', questions: [
-                { id: 17, text: '내가 기도할 때 눈에 보이는 기적이 응답으로 자주 나타난다고 사람들이 말한다.' },
-                { id: 42, text: '하나님은 나를 통해 초자연적인 기사와 이적을 행하신다.' },
-                { id: 67, text: '하나님은 정기적으로 내 생애를 통하여 불가능한 일을 기적같이 이루시는 것 같다.' },
-                { id: 92, text: '사람들은 내가 생활과 환경에 초자연적인 변화를 가져오게 하는 하나님의 도구로 쓰임 받았다고 말하는 적이 있다.' },
-                { id: 117, text: '주님의 이름으로 나는 눈먼 자를 다시 보게 한 적이 있고 또 할 수 있다.' }
-            ]},
             { id: 'tongues', name: '방언', questions: [
                 { id: 19, text: '나는 방언을 말한다.' },
                 { id: 44, text: '나는 내가 전혀 모르는 말로 하나님의 메세지를 사람들에게 말해주곤 한다.' },
@@ -319,13 +349,6 @@
                 { id: 71, text: '나는 가난한 편은 아니지만, 가난한 사람과 쉽게 어울릴 수 있다.' },
                 { id: 96, text: '사람들에 의하면 나는 너무 지나치게 주의 일 때문에 물질적으로 희생하고 있다고 한다.' },
                 { id: 121, text: '내가 그들과 같은 수준의 삶을 살기 때문에 가난한 사람들이 나를 받아들인다.' }
-            ]},
-            { id: 'celibacy', name: '독신', questions: [
-                { id: 22, text: '나는 독신생활을 즐기며 산다.' },
-                { id: 47, text: '내가 혼자 살아도 아무 문제가 없다는 것을 다른 사람들도 인정하고 있다.' },
-                { id: 72, text: '나는 혼자 살기 때문에 더 주님을 섬길 수 있는 시간이 많다.' },
-                { id: 97, text: '나는 독신으로 혼자 살지만 성적인 문제 때문에 어려운 적은 거의 없는 편이다.' },
-                { id: 122, text: '나는 바울이 자기처럼 독신으로 사는 것이 좋겠다고 한 말씀에 공감하는 바이다.' }
             ]},
             { id: 'intercession', name: '중보기도', questions: [
                 { id: 23, text: '나는 매일 최소한 1시간 이상 기도하는 데에 소비한다.' },
@@ -421,7 +444,7 @@
 
         function displayResults(topGifts) {
             resultsList.innerHTML = ''; // Clear previous results
-            const rankPrefix = ['1위', '2위', '3위'];
+            const rankPrefix = ['1순위', '2순위', '3순위'];
             
             topGifts.forEach((gift, index) => {
                 const maxScore = 15; // 5 questions * 3 points max
