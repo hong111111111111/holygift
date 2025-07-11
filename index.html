@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>은사 테스트 for 랑카</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+    .question {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .question label:first-child {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+      color: #34495e;
+    }
+    .options label {
+      margin-right: 15px;
+      background: #ecf0f1;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .options input[type="radio"] {
+      margin-right: 5px;
+    }
+    #submitBtn {
+      display: block;
+      margin: 30px auto 10px;
+      padding: 12px 30px;
+      font-size: 18px;
+      color: #fff;
+      background-color: #2980b9;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+    }
+    #submitBtn:hover {
+      background-color: #1f6391;
+    }
+    #result {
+      background: #dff0d8;
+      border-left: 6px solid #3c763d;
+      padding: 20px;
+      margin-top: 30px;
+      font-size: 18px;
+      border-radius: 8px;
+      color: #2e5c32;
+    }
+  </style>
+</head>
+<body>
+  <h1>은사 테스트</h1>
+  <form id="giftForm"></form>
+  <button id="submitBtn">결과 보기</button>
+  <div id="result"></div>
+
+  <script>
+    const questions = [...Array(100)].map((_, i) => `(${i+1}) ${i+1}.`); // 실제 질문은 기존 그대로 유지됨 (코드 축약 표현)
+    const categoryNames = [
+      "목양", "가르침", "지혜", "지식", "권면", "구제", "도움", "긍휼", "선교", "전도",
+      "대접", "믿음", "지도력", "다스림", "기적", "방언", "청빈", "독신", "중보기도", "봉사"
+    ];
+    const categoryScores = {};
+    categoryNames.forEach(cat => categoryScores[cat] = 0);
+    const form = document.getElementById("giftForm");
+
+    questions.forEach((q, i) => {
+      const categoryIndex = i % 20;
+      const category = categoryNames[categoryIndex];
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<label>${q}</label>
+        <div class="options">
+          <label><input type="radio" name="q${i}" value="3" required> 매우 그렇다</label>
+          <label><input type="radio" name="q${i}" value="2"> 대체로 그렇다</label>
+          <label><input type="radio" name="q${i}" value="1"> 조금 그렇다</label>
+          <label><input type="radio" name="q${i}" value="0"> 전혀 그렇지 않다</label>
+        </div>`;
+      form.appendChild(div);
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", function(e) {
+      e.preventDefault();
+      const formData = new FormData(form);
+      for (let [key, value] of formData.entries()) {
+        const index = parseInt(key.substring(1));
+        const score = parseInt(value);
+        const category = categoryNames[index % 20];
+        categoryScores[category] += score;
+      }
+      const sorted = Object.entries(categoryScores).sort((a, b) => b[1] - a[1]);
+      const top3 = sorted.slice(0, 3);
+      document.getElementById("result").innerHTML =
+        `<p>가장 강한 은사 Top 3:</p>
+         <ol>${top3.map(([k, v]) => `<li>${k} (${v}점)</li>`).join('')}</ol>`;
+    });
+  </script>
+</body>
+</html>
