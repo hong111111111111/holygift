@@ -1,14 +1,3 @@
-네, 맞아요. 일부 질문들이 번역된 느낌이 강하거나 표현이 다소 딱딱해서 어색하게 느껴질 수 있습니다.
-
-사용자들이 더 쉽게 공감하고 자신의 경험을 떠올릴 수 있도록, **질문의 본래 의도는 유지**하면서 **더 부드럽고 자연스러운 표현**으로 다듬어 드릴게요.
-
-아래는 질문과 디자인이 모두 개선된 최종 코드입니다.
-
------
-
-## ✨ 최종 개선 코드
-
-```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,7 +8,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
         :root {
-            --primary-color: #5a67d8; /* 차분한 파란색 계열로 변경 */
+            --primary-color: #5a67d8;
             --primary-light: #ebf4ff;
             --background-color: #f7fafc;
             --card-background: #ffffff;
@@ -27,7 +16,7 @@
             --text-light: #718096;
             --border-color: #e2e8f0;
             --white: #fff;
-            --success-color: #48bb78; /* 결과 바 색상 */
+            --success-color: #48bb78;
         }
 
         * {
@@ -40,10 +29,11 @@
             font-family: 'Noto Sans KR', sans-serif;
             background-color: var(--background-color);
             color: var(--text-dark);
+            /* 데스크톱에서는 상하좌우 여백 유지 */
             padding: 20px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* 콘텐츠가 길어질 경우를 대비해 flex-start로 변경 */
             min-height: 100vh;
         }
 
@@ -54,10 +44,11 @@
 
         .test-wrapper, #results {
             background-color: var(--card-background);
-            border-radius: 20px; /* 더 부드러운 곡선 */
+            border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
             padding: 40px;
             margin-bottom: 30px;
+            width: 100%; /* 너비를 100%로 설정 */
         }
 
         h1 {
@@ -82,33 +73,10 @@
         .instructions p { margin: 8px 0; }
         .instructions strong { color: var(--primary-color); }
 
-        .progress-container {
-            margin-bottom: 30px;
-        }
-
-        .progress-bar-bg {
-            width: 100%;
-            height: 12px;
-            background-color: var(--border-color);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .progress-bar-fg {
-            width: 0%;
-            height: 100%;
-            background-color: var(--primary-color);
-            border-radius: 6px;
-            transition: width 0.4s ease-in-out;
-        }
-        
-        .progress-text {
-            text-align: right;
-            font-size: 0.9em;
-            color: var(--text-light);
-            margin-top: 8px;
-            font-weight: 500;
-        }
+        .progress-container { margin-bottom: 30px; }
+        .progress-bar-bg { width: 100%; height: 12px; background-color: var(--border-color); border-radius: 6px; overflow: hidden; }
+        .progress-bar-fg { width: 0%; height: 100%; background-color: var(--primary-color); border-radius: 6px; transition: width 0.4s ease-in-out; }
+        .progress-text { text-align: right; font-size: 0.9em; color: var(--text-light); margin-top: 8px; font-weight: 500; }
 
         .question-card {
             margin-bottom: 15px;
@@ -122,22 +90,13 @@
             transition: box-shadow 0.2s ease, border-color 0.2s ease;
         }
 
-        .question-card:focus-within { /* 답변 선택 시 시각적 효과 */
+        .question-card:focus-within {
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px var(--primary-light);
         }
 
-        .question-text {
-            font-weight: 500;
-            line-height: 1.6;
-            flex-grow: 1;
-        }
-
-        .score-selector {
-            display: flex;
-            gap: 10px;
-            flex-shrink: 0;
-        }
+        .question-text { font-weight: 500; line-height: 1.6; flex-grow: 1; }
+        .score-selector { display: flex; gap: 10px; flex-shrink: 0; }
 
         .score-btn {
             width: 44px;
@@ -158,14 +117,14 @@
         .score-btn:hover {
             border-color: var(--primary-color);
             color: var(--primary-color);
-            transform: translateY(-2px); /* 호버 시 살짝 위로 */
+            transform: translateY(-2px);
         }
 
         .score-btn.selected {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
             color: var(--white);
-            transform: scale(1.1); /* 선택 시 강조 효과 */
+            transform: scale(1.1);
         }
 
         .submit-button {
@@ -175,7 +134,7 @@
             font-size: 1.2em;
             font-weight: 700;
             color: var(--white);
-            background: linear-gradient(45deg, #5a67d8, #7f9cf5); /* 그라데이션 적용 */
+            background: linear-gradient(45deg, #5a67d8, #7f9cf5);
             border: none;
             border-radius: 12px;
             cursor: pointer;
@@ -193,14 +152,10 @@
 
         #results {
             margin-top: 30px;
-            display: none; /* Initially hidden */
+            display: none;
         }
         
-        #results h2 {
-            text-align: center;
-            color: var(--text-dark);
-            margin-bottom: 30px;
-        }
+        #results h2 { text-align: center; color: var(--text-dark); margin-bottom: 30px; }
         
         .result-item { display: flex; align-items: center; margin-bottom: 25px; }
         .result-item:last-child { margin-bottom: 0; }
@@ -213,22 +168,33 @@
             background: linear-gradient(90deg, var(--success-color), #81e6d9);
             width: 0%; 
             border-radius: 8px; 
-            transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1); /* 부드러운 애니메이션 */
+            transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
             display: flex; 
             align-items: center; 
-            justify-content: flex-end; /* 텍스트 오른쪽 정렬 */
+            justify-content: flex-end;
             color: var(--white); 
             font-size: 0.9em;
             font-weight: 700;
             padding-right: 10px;
         }
 
-        @media (max-width: 600px) {
-            body { padding: 15px; }
-            .test-wrapper, #results { padding: 25px; }
+        /* --- 스마트폰 화면을 위한 수정 --- */
+        @media (max-width: 700px) {
+            body {
+                /* 모바일에서는 body의 좌우 여백을 없애고 상하 여백만 줌 */
+                padding: 20px 0;
+            }
+            .container {
+                 /* 컨테이너에 좌우 여백을 주어 콘텐츠가 화면 끝에 붙지 않게 함 */
+                padding: 0 15px;
+            }
+            .test-wrapper, #results {
+                 /* 모바일에서 내부 여백을 살짝 줄여줌 */
+                padding: 25px;
+            }
             h1 { font-size: 1.7em; }
             .question-card { flex-direction: column; align-items: flex-start; gap: 15px; }
-            .score-selector { align-self: center; /* 버튼 가운데 정렬 */ width: 100%; justify-content: space-around;}
+            .score-selector { align-self: center; width: 100%; justify-content: space-around; }
         }
     </style>
 </head>
@@ -238,8 +204,7 @@
         <div class="test-wrapper">
             <h1>✨ 은사 발견 테스트 ✨</h1>
             <div class="instructions">
-                <p>샬롬 :) <br> 여러분의 은사가 다시 불일듯 하도록, <br> 은사테스트를 준비해 봤어요! <br> 이번 아웃리치가 열방 뿐 아니라 <br> 우리 서로를 세우는 사랑의 여정 되길,<br>마음 다해 축복합니다! - <strong>홍</strong>
-                    </p>
+                <p>샬롬 :) <br> 여러분의 은사를 다시 불일듯 하게 하는 여정 돕기 위해, 은사테스트를 준비해 봤어요! 이번 아웃리치가 열방 뿐 아니라 우리 서로를 세우는 사랑의 여정 되기를 소원하며, 마음 다해 축복합니다! - <strong>홍</strong></p>
                 <p>각 문항이 자신에게 얼마나 해당하는지 <br><strong>숫자</strong>를 눌러 선택해주세요.</p>
                 <p><strong>3</strong>: 매우 그렇다, <strong>2</strong>: 대체로 그렇다, <strong>1</strong>: 조금 그렇다, <strong>0</strong>: 전혀 그렇지 않다</p>
             </div>
@@ -264,6 +229,7 @@
     </div>
 
     <script>
+        // 자바스크립트 코드는 이전과 동일합니다.
         const giftsData = [
             { id: 'pastoring', name: '양육', questions: [
                 { id: 2, text: '사람들의 성공과 실패의 과정을 꾸준히 함께하며 그들의 성장을 돕는 것을 좋아합니다.' },
@@ -392,10 +358,9 @@
         const resultsList = document.getElementById('results-list');
         const progressBar = document.getElementById('progress-bar');
         const progressText = document.getElementById('progress-text');
-        
+
         let allQuestions = [];
-        
-        // 은사 데이터를 기반으로 질문 목록 생성
+
         giftsData.forEach(gift => { 
             gift.questions.forEach(question => {
                 allQuestions.push({ 
@@ -406,13 +371,11 @@
             });
         });
 
-        // 질문들을 랜덤으로 섞기
         allQuestions.sort(() => Math.random() - 0.5);
         
         const totalQuestions = allQuestions.length;
         progressText.textContent = `0 / ${totalQuestions}`;
 
-        // 질문 카드 생성
         allQuestions.forEach((question, index) => {
             const card = document.createElement('div');
             card.className = 'question-card';
@@ -429,7 +392,6 @@
             questionsContainer.appendChild(card);
         });
 
-        // 점수 버튼 클릭 이벤트
         questionsContainer.addEventListener('click', function(e) {
             if (e.target.classList.contains('score-btn')) {
                 const button = e.target;
@@ -483,7 +445,7 @@
                 return { id, ...data };
             }).sort((a, b) => b.score - a.score);
 
-            displayResults(sortedGifts.slice(0, 5)); // 상위 5개 결과 표시
+            displayResults(sortedGifts.slice(0, 5));
         });
 
         function displayResults(topGifts) {
@@ -493,7 +455,7 @@
             resultsDiv.querySelector('h2').textContent = `나의 은사 테스트 결과 (상위 ${topGifts.length}개)`;
 
             topGifts.forEach((gift, index) => {
-                if (gift.score === 0) return; // 점수가 0점이면 표시 안함
+                if (gift.score === 0) return;
 
                 const maxScore = gift.questionCount * 3;
                 const percentage = maxScore > 0 ? (gift.score / maxScore) * 100 : 0;
@@ -526,4 +488,3 @@
     </script>
 </body>
 </html>
-```
